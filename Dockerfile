@@ -9,6 +9,8 @@ RUN apt-get update && \
         git \
         unzip \
         libzip-dev \
+        nodejs \
+        npm \
     && docker-php-ext-install pdo_mysql zip \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
