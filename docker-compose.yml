@@ -13,6 +13,9 @@ services:
     build: .
     volumes:
       - ./web-app:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
   rabbitmq:
     image: rabbitmq:3-management
     hostname: my-rabbit
@@ -24,7 +27,25 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
-
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: laravel_db
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: laravel_password
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
 networks:
   default:
     driver: bridge
+volumes:
+  dbdata:
+    driver: local
