@@ -10,6 +10,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Log Entries</h3>
+
+                    <form method="GET" action="{{ route('logs.index') }}" class="mb-4">
+                        <div class="flex">
+                            <input type="text" name="search" placeholder="Search logs..."
+                                   value="{{ request('search') }}"
+                                   class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full sm:w-1/3">
+                            <x-primary-button class="ms-3 mt-1">
+                                {{ __('Search') }}
+                            </x-primary-button>
+                        </div>
+                    </form>
+
                     @if ($logs->isEmpty())
                     <p>No log entries found.</p>
                     @else
@@ -63,8 +75,8 @@
                         </table>
                     </div>
 
-                    <div class="mt-4">
-                        {{ $logs->links() }}
+                    <div class="mt-4 bg-white">
+                        {{ $logs->appends(['search' => request('search')])->links() }}
                     </div>
                     @endif
                 </div>

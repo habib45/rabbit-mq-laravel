@@ -27,10 +27,23 @@ class LogController extends Controller
     /**
      * Display a listing of the logs.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $logs = Log::orderBy('created_at', 'desc')->paginate(15);
-        return view('logs.index', compact('logs'));
+        $search = $request->query('search');
+
+        $logs = Log::orderBy('created_at', 'desc');
+
+        if ($search) {
+            $logs->where(function ($query) use ($search) {
+                $query->where('level', 'like', '%' . $search . '%')
+                      ->orWhere('application', 'like', '%' . $search . '%')
+                      ->orWhere('message', 'like', '%' . $search . '%');
+            });
+        }
+
+        $logs = $logs->paginate(15);
+
+        return view('logs.index', compact('logs', 'search'));
     }
 
     /**
