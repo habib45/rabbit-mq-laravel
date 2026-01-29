@@ -2,9 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Models\Log;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class TestEmailJob implements ShouldQueue
 {
@@ -23,6 +24,33 @@ class TestEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::info('TestEmailJob executed successfully!');
+        // Simulate sending an email
+        sleep(3);
+
+        Log::create([
+            'level' => 'info',
+            'application' => 'web-app',
+            'message' => 'TestEmailJob processed successfully!',
+            'context' => ['job_name' => 'TestEmailJob'],
+        ]);
+    }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(Throwable $exception): void
+    {
+        Log::create([
+            'level' => 'error',
+            'application' => 'web-app',
+            'message' => 'TestEmailJob failed!',
+            'context' => [
+                'job_name' => 'TestEmailJob',
+                'error' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+            ],
+        ]);
     }
 }
+

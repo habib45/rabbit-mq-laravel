@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Jobs\TestJob;
 use App\Jobs\TestEmailJob;
+use App\Models\Log;
 
 class JobController extends Controller
 {
@@ -16,22 +17,31 @@ class JobController extends Controller
     public function dispatchTestJob()
     {
         TestJob::dispatch();
-        // TestJob::dispatch()->onConnection('rabbitmq-test-channel');
-        return redirect()->route('jobs.index')->with('status', 'Test job dispatched successfully!');
+        Log::create([
+            'level' => 'info',
+            'application' => 'web-app',
+            'message' => 'TestJob dispatched.',
+            'context' => ['job_name' => 'TestJob'],
+        ]);
+        return redirect()->back()->with('status', 'Test job dispatched successfully!');
     }
 
     public function dispatchTestEmailJob()
     {
-        // TestEmailJob::dispatch();
-        // TestEmailJob::dispatch()->onConnection('web-app');
         TestEmailJob::dispatch()->onConnection('rabbitmq')->onQueue('test_channel');
-        return redirect()->route('jobs.index')->with('status', 'Test email job dispatched successfully!');
+        Log::create([
+            'level' => 'info',
+            'application' => 'web-app',
+            'message' => 'TestEmailJob dispatched.',
+            'context' => ['job_name' => 'TestEmailJob'],
+        ]);
+        return redirect()->back()->with('status', 'Test email job dispatched successfully!');
     }
 
 
     public function dispatchTestChannelJob()
     {
         TestEmailJob::dispatch()->onConnection('rabbitmq-test-channel');
-        return redirect()->route('jobs.index')->with('status', 'Test email job dispatched successfully!');
+        return redirect()->back()->with('status', 'Test email job dispatched successfully!');
     }
 }
