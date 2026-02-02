@@ -53,4 +53,3 @@ class TestEmailJob implements ShouldQueue
         ]);
     }
 }
-

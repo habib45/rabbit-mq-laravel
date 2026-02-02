@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+
+require_once __DIR__.'/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exception\AMQPIOException;
 
@@ -13,6 +14,5 @@ try {
     echo "Connection successful!\n";
     $connection->close();
 } catch (AMQPIOException $e) {
-    echo "Connection failed: " . $e->getMessage() . "\n";
+    echo 'Connection failed: '.$e->getMessage()."\n";
 }
-

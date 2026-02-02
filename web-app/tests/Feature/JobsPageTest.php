@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\TestEmailJob;
+use App\Jobs\TestJob;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
-use App\Jobs\TestJob;
-use App\Jobs\TestEmailJob;
 
 class JobsPageTest extends TestCase
 {

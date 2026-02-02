@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
     Route::post('/jobs/test-job', [JobController::class, 'dispatchTestJob'])->name('jobs.test-job');
     Route::post('/jobs/test-email-job', [JobController::class, 'dispatchTestEmailJob'])->name('jobs.test-email-job');
+    Route::post('/jobs/test-channel-job', [JobController::class, 'dispatchTestChannelJob'])->name('jobs.test-channel-job');
+    Route::post('/jobs/test-queue', [JobController::class, 'dispatchTestQueue'])->name('jobs.test-queue');
 
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
     Route::get('/logs/{log}', [LogController::class, 'show'])->name('logs.show');

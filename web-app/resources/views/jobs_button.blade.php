@@ -22,6 +22,20 @@
                             {{ __('Add Test Email Send Job') }}
                         </x-primary-button>
                     </form>
+                    &nbsp;&nbsp;
+                    <form method="POST" action="{{ route('jobs.test-channel-job') }}">
+                        @csrf
+                        <x-primary-button>
+                            {{ __('Add Test Channel Job') }}
+                        </x-primary-button>
+                    </form>
+                    &nbsp;&nbsp;
+                    <form method="POST" action="{{ route('jobs.test-queue') }}">
+                        @csrf
+                        <x-primary-button>
+                            {{ __('Add Test Queue Job ( user Create)') }}
+                        </x-primary-button>
+                    </form>
                 </div>
             </div>
         </div>

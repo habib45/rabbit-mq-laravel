@@ -35,9 +35,9 @@ class LogController extends Controller
 
         if ($search) {
             $logs->where(function ($query) use ($search) {
-                $query->where('level', 'like', '%' . $search . '%')
-                      ->orWhere('application', 'like', '%' . $search . '%')
-                      ->orWhere('message', 'like', '%' . $search . '%');
+                $query->where('level', 'like', '%'.$search.'%')
+                    ->orWhere('application', 'like', '%'.$search.'%')
+                    ->orWhere('message', 'like', '%'.$search.'%');
             });
         }
 

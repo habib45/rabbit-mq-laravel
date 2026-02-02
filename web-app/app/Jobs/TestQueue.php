@@ -2,21 +2,22 @@
 
 namespace App\Jobs;
 
-use App\Models\Log;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Throwable;
 
-class TestJob implements ShouldQueue
+class TestQueue implements ShouldQueue
 {
     use Queueable;
+
+    private $data;
 
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -24,14 +25,16 @@ class TestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        // Simulate some work
-        sleep(2);
-
+        $data = $this->data;
+        User::query()->firstOrCreate(
+            ['phone' => $data['phone']],
+            ['name' => $data['name']]
+        );
         Log::create([
             'level' => 'info',
             'application' => 'web-app',
-            'message' => 'Success: TestJob processed successfully!',
-            'context' => ['job_name' => 'TestJob'],
+            'message' => 'Success: TestQueue has been executed. Data: '.json_encode($data),
+            'context' => ['job_name' => 'TestQueue', 'data' => $data],
         ]);
     }
 
@@ -43,9 +46,9 @@ class TestJob implements ShouldQueue
         Log::create([
             'level' => 'error',
             'application' => 'web-app',
-            'message' => 'TestJob failed!',
+            'message' => 'TestQueue failed!',
             'context' => [
-                'job_name' => 'TestJob',
+                'job_name' => 'TestQueue',
                 'error' => $exception->getMessage(),
                 'file' => $exception->getFile(),
                 'line' => $exception->getLine(),

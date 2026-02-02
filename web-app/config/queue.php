@@ -88,33 +88,45 @@ return [
                 'deferred',
             ],
         ],
-        
+
         'rabbitmq' => [
             'driver' => 'rabbitmq',
             'host' => env('RABBITMQ_HOST', 'localhost'),
             'port' => env('RABBITMQ_PORT', 5672),
             'user' => env('RABBITMQ_USER', 'guest'),
             'password' => env('RABBITMQ_PASSWORD', 'guest'),
+            'queue' => env('RABBITMQ_QUEUE', 'default'),
             'vhost' => env('RABBITMQ_VHOST', '/'),
             'exchange' => env('RABBITMQ_EXCHANGE', 'default'),
             'exchange_type' => env('RABBITMQ_EXCHANGE_TYPE', 'direct'),
-            'queue' => env('RABBITMQ_QUEUE'),
+            'routing_key' => env('RABBITMQ_ROUTING_KEY', ''),
             'after_commit' => false,
+            'options' => [
+                'queue' => [
+                    'declare' => true,
+                    'bind' => true,
+                    'durable' => true,
+                ],
+            ],
         ],
-        
-       'rabbitmq-test-channel' => [
+
+        'rabbitmq-test-channel' => [
             'driver' => 'rabbitmq',
             'host' => env('RABBITMQ_HOST', 'localhost'),
             'port' => env('RABBITMQ_PORT', 5672),
             'user' => env('RABBITMQ_USER', 'guest'),
             'password' => env('RABBITMQ_PASSWORD', 'guest'),
             'vhost' => env('RABBITMQ_VHOST', '/'),
-            'queue' => env('RABBITMQ_TEST_QUEUE', 'test_queue'),
-            'exchange' => [
-                'name' => env('RABBITMQ_EXCHANGE', 'test_exchange'),
-                'type' => 'direct',
-                'durable' => true,
-            ],
+
+            'exchange' => env('RABBITMQ_EXCHANGE', 'default'),
+            'exchange_type' => env('RABBITMQ_EXCHANGE_TYPE', 'direct'),
+            'queue' => env('RABBITMQ_QUEUE'),
+            // 'queue' => env('RABBITMQ_TEST_QUEUE', 'test_queue'),
+            // 'exchange' => [
+            //     'name' => env('RABBITMQ_EXCHANGE', 'test_exchange'),
+            //     'type' => 'direct',
+            //     'durable' => true,
+            // ],
         ],
     ],
 
